@@ -7,7 +7,7 @@
 
     <asp:Repeater runat="server" Id="AuthorsRepeater">
         <HeaderTemplate>
-            <table class="" style="margin-top:15px">
+            <table class="table table-striped" style="margin-top:15px">
             <!-- TODO: Style this table using bootstrap CSS classes http://getbootstrap.com/docs/3.3/components/ -->
             <tr>
                 <th style="width:100px">Nazwisko</th>
