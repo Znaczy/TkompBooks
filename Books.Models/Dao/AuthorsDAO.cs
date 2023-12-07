@@ -57,12 +57,14 @@ namespace Books.Models.Dao
                 var author = connection.Query<Author>(
                     @"SELECT * 
                     FROM dbo.Authors 
-                    INNER JOIN dbo.Books ON dbo.Books.AuthorId = dbo.Authors.AuthorId",
+                    INNER JOIN dbo.Books ON dbo.Books.AuthorId = dbo.Authors.AuthorId
+                    WHERE dbo.Authors.AuthorId = @authorId",
                     new
                     {
                         authorId = id
                     }).FirstOrDefault();
                 // TODO: map properties Books using JOIN
+                // Me: mapped
                 return author;
             }
         }
