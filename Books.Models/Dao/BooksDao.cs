@@ -84,18 +84,24 @@ namespace Books.Models.Dao
             }
         }
 
-        public Book UpdateBook(string firstName, string lastName, string title, string releaseDate, int id)
+        public void UpdateBook(string firstName, string lastName, string title, DateTime releaseDate, int id)
         {
-
             using (var connection = _dbConnectionHolder.GetConnection())
             {
                 // TODO: complete this method
-                var book = connection.Query<Book>("UPDATE dbo.Books SET dbo.Books.Title = @title, dbo.Books.ReleaseDate = @relDate, dbo.Books.AuthorId = (SELECT dbo.Authors.AuthorId FROM dbo.Authors WHERE dbo.Authors.FirstName = @fname AND dbo.Authors.LastName = @lname) Where dbo.Books.BookID = @bookId",
+                // Me: completed
+                connection.Execute(
+                    @"UPDATE dbo.Books 
+              SET Title = @Title, ReleaseDate = @ReleaseDate, AuthorId = (SELECT AuthorId FROM dbo.Authors WHERE FirstName = @FirstName AND LastName = @LastName)
+              WHERE BookID = @BookId",
                     new
                     {
-                        
-                    }).FirstOrDefault();
-                return book;
+                        Title = title,
+                        ReleaseDate = releaseDate,
+                        FirstName = firstName,
+                        LastName = lastName,
+                        BookId = id
+                    });
             }
         }
 
