@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Dapper;
 
 namespace Books.Models.Dao
@@ -92,8 +90,8 @@ namespace Books.Models.Dao
                 // Me: completed
                 connection.Execute(
                     @"UPDATE dbo.Books 
-              SET Title = @Title, ReleaseDate = @ReleaseDate, AuthorId = (SELECT AuthorId FROM dbo.Authors WHERE FirstName = @FirstName AND LastName = @LastName)
-              WHERE BookID = @BookId",
+                    SET Title = @Title, ReleaseDate = @ReleaseDate, AuthorId = (SELECT AuthorId FROM dbo.Authors WHERE FirstName = @FirstName AND LastName = @LastName)
+                    WHERE BookID = @BookId",
                     new
                     {
                         Title = title,
@@ -105,18 +103,22 @@ namespace Books.Models.Dao
             }
         }
 
-        public Book InsertBook(string firstName, string lastName, string title, string releaseDate)
+        public void InsertBook(string firstName, string lastName, string title, DateTime releaseDate)
         {
-
             using (var connection = _dbConnectionHolder.GetConnection())
             {
                 // TODO: complete this method
-                var book = connection.Query<Book>("INSERT INTO dbo.Books (dbo.Books.Title, dbo.Books.ReleaseDate, dbo.Books.AuthorId) VALUES (@title, @relDate, (SELECT dbo.Authors.AuthorId FROM dbo.Authors WHERE dbo.Authors.FirstName = @fname AND dbo.Authors.LastName = @lname))",
+                // Me: completed
+                connection.Execute(
+                    @"INSERT INTO dbo.Books (Title, ReleaseDate, AuthorId) 
+                    VALUES (@Title, @ReleaseDate, (SELECT AuthorId FROM dbo.Authors WHERE FirstName = @FirstName AND LastName = @LastName))",
                     new
                     {
-                        Title = title
-                    }).FirstOrDefault();
-                    return book;
+                        Title = title,
+                        ReleaseDate = releaseDate,
+                        FirstName = firstName,
+                        LastName = lastName
+                    });
             }
         }
     }
