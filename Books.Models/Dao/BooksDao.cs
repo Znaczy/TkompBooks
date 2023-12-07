@@ -34,10 +34,9 @@ namespace Books.Models.Dao
                 // TODO: fill with query parameters
                 // Me: filled
                 var books = connection.Query<Book>(
-                    @"SELECT * 
-                    FROM dbo.Books " +
-                    "INNER JOIN dbo.Authors ON dbo.Authors.AuthorId = dbo.Books.AuthorId " +
-                    "WHERE releaseDate = @rdate, title = @rtitle",
+                    @"SELECT * FROM dbo.Books 
+                    INNER JOIN dbo.Authors ON dbo.Authors.AuthorId = dbo.Books.AuthorId
+                    WHERE releaseDate = @rdate, title = @rtitle",
                     new
                     {
                         rdate = releaseDate,
@@ -68,17 +67,20 @@ namespace Books.Models.Dao
             }
         }
 
-        public Book DeleteBook(int id)
+        public void DeleteBook(int id)
         {
             using (var connection = _dbConnectionHolder.GetConnection())
             {
                 // TODO: complete this method
-                    var book = connection.Query<Book>("DELETE FROM dbo.Books",
+                // Me: completed
+                    var book = connection.Execute(
+                        @"DELETE 
+                        FROM dbo.Books
+                        WHERE bookId = @bookid",
                         new
                         {
-                            
-                        }).FirstOrDefault();
-                    return book;
+                            bookId = id
+                        });
             }
         }
 
