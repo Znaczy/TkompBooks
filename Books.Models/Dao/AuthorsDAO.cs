@@ -1,9 +1,6 @@
-﻿using System;
+﻿using Dapper;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Dapper;
 
 namespace Books.Models.Dao
 {
@@ -58,6 +55,7 @@ namespace Books.Models.Dao
         }
 
         // TODO: see BooksDao.cs - Add it to project
+        // Me: added
         public Author DeleteAuthor(int id)
         {
             using (var connection = _dbConnectionHolder.GetConnection())
