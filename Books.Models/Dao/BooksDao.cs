@@ -32,10 +32,15 @@ namespace Books.Models.Dao
             using (var connection = _dbConnectionHolder.GetConnection())
             {
                 // TODO: fill with query parameters
-                var books = connection.Query<Book>("SELECT * FROM dbo.Books INNER JOIN dbo.Authors ON dbo.Authors.AuthorId = dbo.Books.AuthorId Where releaseDate = @rdate, title = @rtitle",
+                // Me: filled
+                var books = connection.Query<Book>(
+                    @"SELECT * FROM dbo.Books " +
+                    "INNER JOIN dbo.Authors ON dbo.Authors.AuthorId = dbo.Books.AuthorId " +
+                    "Where releaseDate = @rdate, title = @rtitle",
                     new
                     {
-
+                        rdate = releaseDate,
+                        rtitle = title
                     }).ToList();
 
                 return books;
@@ -47,7 +52,8 @@ namespace Books.Models.Dao
             using (var connection = _dbConnectionHolder.GetConnection())
             {
                 // TODO:fill with query parameters
-                var book = connection.Query<Book>("SELECT * FROM dbo.Books INNER JOIN dbo.Authors ON dbo.Authors.AuthorId = dbo.Books.AuthorId",
+                var book = connection.Query<Book>("SELECT * FROM dbo.Books " +
+                    "INNER JOIN dbo.Authors ON dbo.Authors.AuthorId = dbo.Books.AuthorId",
                     new
                     {
                         bookId = id
