@@ -8,6 +8,7 @@ using Dapper;
 namespace Books.Models.Dao
 {
     // TODO: add/include this file to project
+    // Me: included
     public class BooksDao
     {
         private readonly DbConnectionHolder _dbConnectionHolder;
