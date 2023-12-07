@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace Books.Models.Dao
 {
@@ -32,13 +33,18 @@ namespace Books.Models.Dao
         {
             using (var connection = _dbConnectionHolder.GetConnection())
             {
-                var authors = connection.Query<Author>("SELECT * FROM dbo.Authors Where dbo.Authors.LastName = @lname, dbo.Authors.FirstName = @fname", 
+                var authors = connection.Query<Author>(
+                    @"SELECT * 
+                    FROM dbo.Authors 
+                    INNER JOIN dbo.Books ON dbo.Books.AuthorId = dbo.Authors.AuthorId
+                    Where dbo.Authors.LastName = @lname AND dbo.Authors.FirstName = @fname",
                     new
                     {
                         lname = lastName,
                         fname = firstName
                     }).ToList();
                 // TODO: map properties Books using JOIN
+                //Me: mapped
 
                 return authors;
             }
@@ -48,7 +54,10 @@ namespace Books.Models.Dao
         {
             using (var connection = _dbConnectionHolder.GetConnection())
             {
-                var author = connection.Query<Author>("SELECT * FROM dbo.Authors Where dbo.Authors.AuthorID = @authorId",
+                var author = connection.Query<Author>(
+                    @"SELECT * 
+                    FROM dbo.Authors 
+                    INNER JOIN dbo.Books ON dbo.Books.AuthorId = dbo.Authors.AuthorId",
                     new
                     {
                         authorId = id
